@@ -1,117 +1,180 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
+import * as React from 'react';
+import {View, Text} from 'react-native';
+import {NavigationContainer, useNavigation} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
-import React from 'react';
-import type {Node} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+// //////////////notification/////////////////
+// import messaging from '@react-native-firebase/messaging';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import {Provider} from 'react-redux';
+import {Store} from './src/redux/store';
 
-/* $FlowFixMe[missing-local-annot] The type annotation(s) required by Flow's
- * LTI update could not be added via codemod */
-const Section = ({children, title}): Node => {
-  const isDarkMode = useColorScheme() === 'dark';
+//Screens
+import AuthNav from './src/navigation/AuthNav/AuthNav';
+import BottomTab from './src/navigation/BottomTab/BottomTab';
+import OrderDetail from './src/screens/StackScreens/OrderDetail/OrderDetail';
+import GuestsList from './src/screens/StackScreens/Guests/GuestsList';
+import GuestsDetail from './src/screens/StackScreens/Guests/GuestsDetail';
+import AddGuests from './src/screens/StackScreens/Guests/AddGuests';
+import EditGuests from './src/screens/StackScreens/Guests/EditGuests';
+import Settings from './src/screens/StackScreens/Settings/Settings';
+import UpdateProfile from './src/screens/StackScreens/UpdateProfile/UpdateProfile';
+import PrivacyTerms from './src/screens/StackScreens/Conditions/PrivacyTerms';
+import CreateTrip from './src/screens/StackScreens/Trip/CreateTrip/CreateTrip';
+import TripRoute from './src/screens/StackScreens/Trip/TripRoute/TripRoute';
+import TripCompleted from './src/screens/StackScreens/Trip/TripRoute/TripCompleted';
+import Rattings from './src/screens/StackScreens/Rattings/Rattings';
+
+const Stack = createNativeStackNavigator();
+function App() {
+  //const navigation = useNavigation();
+  const [loading, setLoading] = React.useState(true);
+  const [initialRoute, setInitialRoute] = React.useState('Home');
+
+  // React.useEffect( () => {
+  //   // Assume a message-notification contains a "type" property in the data payload of the screen to open
+  // //   messaging().onMessage(remoteMessage => {
+  // //     navigation.navigate('GooglePassword');
+  // //     console.log(props.navigation)
+  // // });
+  //   messaging().onNotificationOpenedApp(remoteMessage => {
+  //     console.log(
+  //       'Notification caused app to open from background state:',
+  //       remoteMessage.notification.body,
+  //     );
+  // AsyncStorage.setItem('Notification',remoteMessage.notification.body);
+
+  //   //navigation.navigate('UpdateProfile');
+  //   });
+
+  //  // Check whether an initial notification is available
+  //  messaging()
+  //     .getInitialNotification()
+  //     .then(remoteMessage => {
+  //       if (remoteMessage) {
+  //         console.log(
+  //           'Notification caused app to open from quit state:',
+  //           remoteMessage.notification.body,
+  //         );
+  //        AsyncStorage.removeItem('Notification');
+  //         AsyncStorage.setItem('Notification',remoteMessage.notification.body);
+  //         //navigation.navigate('UpdateProfile');s
+  //         //setInitialRoute(remoteMessage.data.type); // e.g. "Settings"
+  //     //setInitialRoute(remoteMessage.data.type);
+  //       }
+  //       setLoading(false);
+  //    });
+  //   if (loading) {
+  //     return null;
+  //   }
+  // }, []);
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
+    <Provider store={Store}>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName={initialRoute}>
+          <Stack.Screen
+            name="AuthNav"
+            component={AuthNav}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="BottomTab"
+            component={BottomTab}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="OrderDetail"
+            component={OrderDetail}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="GuestsList"
+            component={GuestsList}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="GuestsDetail"
+            component={GuestsDetail}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="AddGuests"
+            component={AddGuests}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="EditGuests"
+            component={EditGuests}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="Settings"
+            component={Settings}
+            options={{
+              headerShown: false,
+            }}
+          />
+                <Stack.Screen
+            name="UpdateProfile"
+            component={UpdateProfile}
+            options={{
+              headerShown: false,
+            }}
+          />
+                  <Stack.Screen
+            name="PrivacyTerms"
+            component={PrivacyTerms}
+            options={{
+              headerShown: false,
+            }}
+          />
+                      <Stack.Screen
+            name="CreateTrip"
+            component={CreateTrip}
+            options={{
+              headerShown: false,
+            }}
+          />
+                                <Stack.Screen
+            name="TripRoute"
+            component={TripRoute}
+            options={{
+              headerShown: false,
+            }}
+          />
+                                          <Stack.Screen
+            name="TripCompleted"
+            component={TripCompleted}
+            options={{
+              headerShown: false,
+            }}
+          />
+                                                 <Stack.Screen
+            name="Rattings"
+            component={Rattings}
+            options={{
+              headerShown: false,
+            }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
-};
-
-const App: () => Node = () => {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.js</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-};
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
+}
 
 export default App;
