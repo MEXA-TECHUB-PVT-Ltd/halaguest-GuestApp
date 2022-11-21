@@ -1,49 +1,83 @@
 import React, { useEffect, useState } from 'react';
 import {
   SafeAreaView,TextInput,
-  Image, View, Text, TouchableOpacity, Button,StatusBar
+  Image, View, Text, TouchableOpacity,StatusBar
 } from 'react-native';
 
 ////////////paper papkage///////////////
-import { Checkbox } from 'react-native-paper';
+import { Checkbox,Snackbar } from 'react-native-paper';
 
 ///////////////////app components////////////////
 import CustomButtonhere from '../../../components/Button/CustomButton';
 
-///////////contry picker package///////////
+/////////////////country picker/////////////
 import CountryPicker from "react-native-country-picker-modal"
-
-/////////////app icons////////////////
-import Icon from 'react-native-vector-icons/MaterialIcons';
 
 //////////////////app styles///////////
 import styles from './styles';
 import Authtextstyles from '../../../styles/GlobalStyles/Authtextstyles';
 import Logostyles from '../../../styles/GlobalStyles/Logostyles';
 import Colors from '../../../utills/Colors';
-import { widthPercentageToDP as wp ,heightPercentageToDP as hp} from 'react-native-responsive-screen';
-
-////////////////////redux////////////
-import { useSelector, useDispatch } from 'react-redux';
-import { setPhoneNumber } from '../../../redux/actions';
 
 /////////////////////app images///////////////////
 import { appImages } from '../../../constant/images';
+import { widthPercentageToDP as wp ,heightPercentageToDP as hp} from 'react-native-responsive-screen';
+
+
+/////////////////////////////////firebase///////////////////////
+import auth from '@react-native-firebase/auth';
 
 const Login = ({ navigation }) => {
 
-    /////////////redux states///////
-    const { HotelTypes} = useSelector(state => state.userReducer);
-    const dispatch = useDispatch();
+/////////////////////////firebase////////////////
+  // If null, no SMS has been sent
+  const [confirm, setConfirm] = useState(null);
 
-  ///////////////////checkbox state///////////////////
-  const [checked, setChecked] = React.useState(false);
+  const [code, setCode] = useState('');
 
-    /////////////country picker states////////////
+  // Handle the button press
+  async function signInWithPhoneNumber(phoneNumber) {
+    const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
+    setConfirm(confirmation);
+    console.log('code.',confirmation);
+  }
+
+  async function confirmCode() {
+    try {
+      await confirm.confirm(code);
+    } catch (error) {
+      console.log('Invalid code.');
+    }
+  }
+
+    ///////////////////checkbox state///////////////////
+    const [checked, setChecked] = React.useState(false);
+
+       /////////button states/////////////
+ const [visible, setVisible] = useState(false);
+ const [snackbarValue, setsnackbarValue] = useState({value: '', color: ''});
+ const onDismissSnackBar = () => setVisible(false);
+
+    ///////////////country picker states//////////////////////
   const [CountryPickerView, setCountryPickerView] = useState(false);
   const [countryCode, setCountryCode] = useState('92');
-  const [Phoneno, setPhoneno] = useState('92');
-  const [number, setnumber] = useState();
+  const [number, setnumber] = useState('');
+
+  //////////////////////// API forms validations////////////////////////
+  const LoginValidation = async () => {
+    // input validation
+    if (number == '') {
+      setsnackbarValue({value: 'Please Enter Phone Number', color: 'red'});
+      setVisible('true');
+    } 
+   else if (checked == false) {
+      setsnackbarValue({value: 'Please Checked the Terms and Condition', color: 'red'});
+      setVisible('true');
+    } 
+    else {
+      navigation.navigate('Verification',{Phonenumber:countryCode+number})
+    }
+  };
 
   useEffect(() => {
 
@@ -99,7 +133,7 @@ const Login = ({ navigation }) => {
                   //style={styles.input}
                   editable={false}
                   value={'+'+countryCode}
-                  style={{ fontSize: 15, fontWeight: '500',
+                  style={{ fontSize: hp(2), fontWeight: '500',
                    color: Colors.Appthemecolor,padding:'0.3%' }}
                   placeholderTextColor={"black"}
                 />
@@ -111,7 +145,7 @@ const Login = ({ navigation }) => {
        placeholderTextColor={Colors.Appthemecolor}
        autoCapitalize="none"
        keyboardType='number-pad'
-       style={{ width: '80%', marginLeft: 10, alignSelf: 'center', color: '#000' }}
+       style={{ width: '80%', marginLeft:wp(3), alignSelf: 'center', color: '#000' }}
      />
    </View>
    <View style={{flexDirection:"row",alignItems:'center',marginTop:hp(2)}}>
@@ -131,15 +165,16 @@ const Login = ({ navigation }) => {
 
 </Text>
    </View>
+
         <CustomButtonhere
             title={'SIGN IN'}
             widthset={78}
-            topDistance={28}
+            topDistance={30}
             onPress={() => 
              {
-              dispatch(setPhoneNumber(number)),
-              //navigation.navigate('Verification',{Phonenumber:number})}
-              navigation.navigate('Verification')}
+              //signInWithPhoneNumber('+'+countryCode+number)
+              LoginValidation()
+            }
             }
           />
                      {/* <View style={Authlaststyles.lasttextview}>
@@ -148,7 +183,19 @@ const Login = ({ navigation }) => {
         <Text style={Authlaststyles.lasttext}>Sign Up</Text>
         </TouchableOpacity>
       </View> */}
-
+              <Snackbar
+          duration={500}
+          visible={visible}
+          onDismiss={onDismissSnackBar}
+          style={{
+            backgroundColor: snackbarValue.color,
+            marginBottom:hp(15),
+            zIndex: 999,
+            alignSelf:"center",
+            marginLeft:wp(15)
+          }}>
+          {snackbarValue.value}
+        </Snackbar>
     </SafeAreaView>
   )
 };

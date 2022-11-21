@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "350758107993",
+    "project_id": "halaguest-guestapp",
+    "storage_bucket": "halaguest-guestapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:350758107993:android:a2b1fbade150801305ea48",
+        "android_client_info": {
+          "package_name": "com.halaguestguestapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "350758107993-uo9c6nic9b6snsi1l44nl5n9lt6bhqvg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.halaguestguestapp",
+            "certificate_hash": "cb33b028aa7d05baaeb040f2e7e3fc83ec6d30d4"
+          }
+        },
+        {
+          "client_id": "350758107993-75hpmucs7r6nnaaq66gb3hm143hh0ils.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAtzdjVeSxkwn_0gB5Cs-1KzKxMAaUR7to"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "350758107993-75hpmucs7r6nnaaq66gb3hm143hh0ils.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
