@@ -12,7 +12,7 @@ from 'react-native-responsive-screen';
 
 ////////////////////redux////////////
 import { useSelector, useDispatch } from 'react-redux';
-import { setHotelType } from '../../redux/actions';
+import { setHotelType,setHotelTypeId } from '../../redux/actions';
 
   //////////////////////////app api/////////////////////////
   import axios from 'axios';
@@ -72,7 +72,7 @@ const HotelTypes = (props) => {
           container: {
             borderTopLeftRadius:wp(10),
             borderTopRightRadius:wp(10),
-              height:hp(35)
+              height:hp(95)
           }
         }}
         
@@ -93,6 +93,7 @@ const HotelTypes = (props) => {
             onPress={() =>
               {
                 dispatch(setHotelType(item.hotel_name)),
+                dispatch(setHotelTypeId(item._id)),
                 props.refRBSheet.current.close()
                 //reflinkddRBSheet.current.open()
               }}

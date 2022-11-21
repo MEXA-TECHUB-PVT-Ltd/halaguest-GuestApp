@@ -119,7 +119,7 @@ axios({
 })
   .then(async function (response) {
     console.log('response in driver login', JSON.stringify(response.data.data.hotel_id.length));
-    if(response.data.message === "Guest Exists" && response.data.data.hotel_id.length<0)// && response.data.data.hotel_id.length===0
+    if(response.data.message === "Guest Exists" && response.data.data.hotel_id.length>0)// && response.data.data.hotel_id.length===0
     {
       dispatch(setPhoneNumber(response.data.data.phoneno))
       dispatch(setLoginUser(response.data.data._id))
