@@ -45,6 +45,8 @@ import { checkPermission } from '../../../api/FCMToken';
 
 const CreateAccount = ({ navigation,route }) => {
 
+  const [maxheight, setHeight] = useState(52)
+
     ////////////prevous data States///////////////
     const [predata] = useState(route.params);
 
@@ -52,7 +54,7 @@ const CreateAccount = ({ navigation,route }) => {
   const [checked, setChecked] = React.useState('male');
 
       /////////////////////////redux///////////////////
-      const { hoteltype,login_user_id, phone_no,user_image ,country_name,state_name,city_name } =
+      const { hoteltype,login_user_id, phone_no,user_image ,country_name,state_name,city_name,hoteltype_id } =
       useSelector(state => state.userReducer);
      const dispatch = useDispatch();
 
@@ -88,17 +90,18 @@ const CreateAccount = ({ navigation,route }) => {
   const [email, setEmail] = React.useState();
   const [zipcode,  setZipcode] = React.useState();
   const [street_address,  setStreet_address] = React.useState();
+  const [details,  setDetails] = React.useState();
   const[FCMToken,setFCMToken]=useState()
  //////////////////////Api Calling/////////////////
- const Createuser = async() => {
+ const CreateAcount = async() => {
   var user= await AsyncStorage.getItem('Userid')
   var date=new Date()
   console.log("userid:",date)
     axios({
-      method: 'POST',
-      url: BASE_URL + 'api/hotel/createHotel',
+      method: 'PUT',
+      url: BASE_URL + 'api/guest/updateGuest',
       data: {
-        hotel_name: hoteltype,
+        hotel_id: hoteltype_id,
         _id:login_user_id,
         img: user_image,
         email: email,
@@ -110,6 +113,7 @@ const CreateAccount = ({ navigation,route }) => {
         street_address: street_address,
         name: name,
         phoneNo: phone_no,
+        details: details,
         created_at: date,
         status: 'unblock',
         device_token: FCMToken
@@ -136,7 +140,64 @@ const CreateAccount = ({ navigation,route }) => {
         //do something with the result
       })
     }, []);
+ ///////////email//////////////////
+ const handleValidEmail = (val) => {
+  let reg = /^\w+([\.-]?\w+)@\w+([\.-]?\w+)(\.\w\w+)+$/;
+  if (reg.test(val)) {
+      console.log('true')
+      return true;
+  }
+  else {
+      console.log('falsse')
+      return false;
+  }
+}
 
+  //////////////////////// API forms validations////////////////////////
+  const AcountValidation = async () => {
+    // input validation
+    if (name == '') {
+      setsnackbarValue({value: 'Please Enter Username', color: 'red'});
+      setVisible('true');
+    } else if (email == '') {
+      setsnackbarValue({value: 'Please Enter Email', color: 'red'});
+      setVisible('true');
+    } else if (!handleValidEmail(email)) {
+      setsnackbarValue({value: 'Incorrect Email', color: 'red'});
+      setVisible('true');
+    }   else if (hoteltype_id == '') {
+      setsnackbarValue({value: 'Please Enter Hotel', color: 'red'});
+      setVisible('true');
+    }  else if (country_name == '') {
+      setsnackbarValue({value: 'Please Enter Country', color: 'red'});
+      setVisible('true');
+    }    else if (state_name == '') {
+      setsnackbarValue({value: 'Please Enter State', color: 'red'});
+      setVisible('true');
+    } else if (city_name == '') {
+      setsnackbarValue({value: 'Please Enter City', color: 'red'});
+      setVisible('true');
+    } 
+
+    else if (zipcode == '') {
+      setsnackbarValue({value: 'Please Enter Zipcode', color: 'red'});
+      setVisible('true');
+    }
+ 
+    else if (street_address == '') {
+      setsnackbarValue({value: 'Please Enter Street Address', color: 'red'});
+      setVisible('true');
+    }
+    else if (details== '') {
+      setsnackbarValue({value: 'Please Enter Details', color: 'red'});
+      setVisible('true');
+    }
+    else {
+      setloading(1);
+      setdisable(1);
+      CreateAcount()
+    }
+  };
     return (
       <ScrollView
       showsHorizontalScrollIndicator={false}
@@ -279,14 +340,47 @@ const CreateAccount = ({ navigation,route }) => {
               </View>
       
               <Text style={Inputstyles.inputtoptext}>Street Address</Text>
-              <View style={Inputstyles.action}>
-                <TextInput
+          <View style={Inputstyles.action}>
+            
+            <TextInput
                   ref={ref_input6}
-                  onChangeText={setStreet_address}
-                  placeholderTextColor={Colors.inputtextcolor}
-                  style={Inputstyles.input}
-                />
-              </View>
+                  value={street_address}
+              onChangeText={setStreet_address}
+              placeholderTextColor={Colors.inputtextcolor}
+              style={[Inputstyles.input,{height:maxheight===56?hp(75):hp(18)}]}
+              returnKeyType={'next'}
+              onSubmitEditing={() => {
+                ref_input7.current.focus();
+              }}
+              blurOnSubmit={false}
+              multiline={true}
+              maxLength={200}
+              numberOfLines={2.5}
+              onContentSizeChange={e => 
+{                console.log('heretext htt',e.nativeEvent.contentSize.height)
+                setHeight(e.nativeEvent.contentSize.height)}
+              }
+            />
+          </View>
+          <Text style={Inputstyles.inputtoptext}>Details</Text>
+          <View style={Inputstyles.action}>
+            
+            <TextInput
+                  ref={ref_input7}
+              onChangeText={setDetails}
+              placeholderTextColor={Colors.inputtextcolor}
+              style={[Inputstyles.input,{height:maxheight===56?hp(75):hp(18)}]}
+            
+              multiline={true}
+              maxLength={200}
+              numberOfLines={2.5}
+              onContentSizeChange={e => 
+{                console.log('heretext htt',e.nativeEvent.contentSize.height)
+                setHeight(e.nativeEvent.contentSize.height)}
+                
+              }
+            />
+          </View>
               <Text style={Inputstyles.inputtoptext}>Gender</Text>
               <View
                 style={{
@@ -323,9 +417,12 @@ const CreateAccount = ({ navigation,route }) => {
               title={'NEXT'}
               widthset={'78%'}
               topDistance={0}
-              onPress={() => 
-                Createuser()
-               // navigation.navigate('Drawerroute')
+              loading={loading}
+              disabled={disable}
+              onPress={
+                () => 
+                AcountValidation()
+                //navigation.navigate('Drawerroute')
               }
             />
           </View>

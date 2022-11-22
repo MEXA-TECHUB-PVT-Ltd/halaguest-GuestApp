@@ -1,7 +1,7 @@
 
  ////////////////APP STATES/////////////////////
 export const SET_HOTEL_TYPE = 'SET_HOTEL_TYPE';
-
+export const SET_HOTEL_TYPE_ID = 'SET_HOTEL_TYPE_ID';
 
 ////////////////////Account Data Submition////////////////
 export const SET_HOTEL_SUBMIT_ID = 'SET_HOTEL_SUBMIT_ID';
@@ -47,6 +47,12 @@ export const setHotelType = hoteltype => dispatch => {
     dispatch({
         type: SET_HOTEL_TYPE,
         payload: hoteltype,
+    });
+};
+export const setHotelTypeId = hoteltype_id => dispatch => {
+    dispatch({
+        type: SET_HOTEL_TYPE_ID,
+        payload: hoteltype_id,
     });
 };
 

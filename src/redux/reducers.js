@@ -5,6 +5,7 @@ import {
 
   ////////////////APP STATES/////////////////////
   SET_HOTEL_TYPE,
+  SET_HOTEL_TYPE_ID,
 
   ////////////////////Account Data Submition////////////////
   SET_HOTEL_SUBMIT_ID,
@@ -40,6 +41,7 @@ const initialState = {
 
   ////////////////APP STATES/////////////////////
   hoteltype: '',
+  hoteltype_id:'',
 
     ////////////////////Account Data Submition////////////////
     hotel_submit_id:'',
@@ -80,6 +82,8 @@ function userReducer(state = initialState, action) {
     ////////////////APP STATES/////////////////////
     case SET_HOTEL_TYPE:
       return {...state, hoteltype: action.payload};
+      case SET_HOTEL_TYPE_ID:
+      return {...state, hoteltype_id: action.payload};
 
           ////////////////////Account Data Submition////////////////
           case SET_HOTEL_SUBMIT_ID:
@@ -124,7 +128,7 @@ function userReducer(state = initialState, action) {
       return {...state, city_name: action.payload};
     case SET_CITY_ID:
       return {...state, city_id: action.payload};
-      
+
     default:
       return state;
   }
