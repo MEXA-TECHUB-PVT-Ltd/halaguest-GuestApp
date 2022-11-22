@@ -1,8 +1,10 @@
 import {
+   ////////////////APP LOGIN STATES/////////////////////
+   SET_LOGIN_USER,
+   SET_PHONE_NO,
 
   ////////////////APP STATES/////////////////////
   SET_HOTEL_TYPE,
-  SET_PHONE_NO,
 
   ////////////////////Account Data Submition////////////////
   SET_HOTEL_SUBMIT_ID,
@@ -21,13 +23,23 @@ import {
   EDIT_USER_IMAGE,
   /////////////////NAV PLACE///////////////
   SET_NAV_PLACE,
+
+    ////////////////Locations STATES/////////////////////
+    SET_COUNTRY_NAME,
+    SET_COUNTRY_ID,
+    SET_STATE_NAME,
+    SET_STATE_ID,
+    SET_CITY_NAME,
+    SET_CITY_ID,
 } from './actions';
 
 const initialState = {
+  ////////////////APP LOGIN STATES/////////////////////
+  login_user_id: '',
+  phone_no: '',
 
   ////////////////APP STATES/////////////////////
   hoteltype: '',
-  phone_no: '',
 
     ////////////////////Account Data Submition////////////////
     hotel_submit_id:'',
@@ -47,16 +59,27 @@ const initialState = {
 
   //////////////////NAV PLACE//////////////
   nav_place: '',
+
+    ////////////////Locations STATES/////////////////////
+    country_name: '',
+    country_id: '',
+    state_name: '',
+    state_id: '',
+    city_name: '',
+    city_id: '',
 };
 
 function userReducer(state = initialState, action) {
   switch (action.type) {
+        ////////////////APP LOGIN STATES/////////////////////
+        case SET_LOGIN_USER:
+          return {...state, login_user_id: action.payload};
+        case SET_PHONE_NO:
+          return {...state, phone_no: action.payload};
 
     ////////////////APP STATES/////////////////////
     case SET_HOTEL_TYPE:
       return {...state, hoteltype: action.payload};
-    case SET_PHONE_NO:
-      return {...state, phone_no: action.payload};
 
           ////////////////////Account Data Submition////////////////
           case SET_HOTEL_SUBMIT_ID:
@@ -88,6 +111,20 @@ function userReducer(state = initialState, action) {
     case SET_NAV_PLACE:
       return {...state, nav_place: action.payload};
 
+          ////////////////Locations STATES/////////////////////
+    case SET_COUNTRY_NAME:
+      return {...state, country_name: action.payload};
+    case SET_COUNTRY_ID:
+      return {...state, country_id: action.payload};
+    case SET_STATE_NAME:
+      return {...state, state_name: action.payload};
+    case SET_STATE_ID:
+      return {...state, state_id: action.payload};
+    case SET_CITY_NAME:
+      return {...state, city_name: action.payload};
+    case SET_CITY_ID:
+      return {...state, city_id: action.payload};
+      
     default:
       return state;
   }
