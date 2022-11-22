@@ -362,24 +362,20 @@ const CreateAccount = ({ navigation,route }) => {
               }
             />
           </View>
-          <Text style={Inputstyles.inputtoptext}>Details</Text>
-          <View style={Inputstyles.action}>
-            
+ 
+          <Text style={Inputstyles.inputtoptext}>Description</Text>
+          <View style={[Multilineinputstyles.action, { height: wp('38%'), marginTop: wp('3%') }]}>
             <TextInput
-                  ref={ref_input7}
-              onChangeText={setDetails}
+                    ref={ref_input7}
+                    onChangeText={setDetails}
+              //placeholder="Tag Relevant Profession to increase the reach"
+              //onChangeText={setReach}
               placeholderTextColor={Colors.inputtextcolor}
-              style={[Inputstyles.input,{height:maxheight===56?hp(75):hp(18)}]}
-            
               multiline={true}
-              maxLength={200}
-              numberOfLines={2.5}
-              onContentSizeChange={e => 
-{                console.log('heretext htt',e.nativeEvent.contentSize.height)
-                setHeight(e.nativeEvent.contentSize.height)}
-                
-              }
+
+              style={Multilineinputstyles.input}
             />
+
           </View>
               <Text style={Inputstyles.inputtoptext}>Gender</Text>
               <View
