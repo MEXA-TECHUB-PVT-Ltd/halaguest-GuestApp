@@ -42,6 +42,13 @@ import Inputstyles from '../../../styles/GlobalStyles/Inputstyles';
 /////////////////app images///////////
 import { appImages } from '../../../constant/images';
 
+//////////////////current location function/////////////
+import {
+  locationPermission,
+  getCurrentLocation,
+} from '../../../api/CurrentLocation';
+
+
 const Orderss = [
     {
       id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
@@ -82,98 +89,70 @@ const [userloc, setuserloc] = useState(false);
 
             /////////////main menu status states/////////////
     const [Orders, setOrders] = useState('')
-        const GetOrders = async () => {
+    const GetOrders = async () => {
+      var user= await AsyncStorage.getItem('Userid')
+      axios({
+          method: 'GET',
+          url: BASE_URL + 'api/Order/getGuestOrdersByTime/'+user,
+      })
+          .then(async function (response) {
+            setOrders(response.data)
+          })
+          .catch(function (error) {
+              console.log("error", error)
+          })
+      }
+///////////////////map states//////////
+const [guest_lat, setGuest_lat] = useState();
+const [guest_log, setGuest_log] = useState();
+const [guest_location, setGuest_location] = useState();
 
-            axios({
-                method: 'GET',
-                url: BASE_URL + 'api/Order/allOrders',
-            })
-                .then(async function (response) {
-                    console.log("list data here ", response.data)
-                    setOrders(response.data)
-                })
-                .catch(function (error) {
-                    console.log("error", error)
-                })
-            }
-    /////////////user current location////////////////
-const GetcurrLocation=()=>{
-    Geocoder.init(MapKeyApi); 
-    Geolocation.getCurrentPosition(
-                    (position) => {
-                      setPinLat(position.coords.latitude)
-                      setPinLog(position.coords.longitude)
-                    setRegion({
-                      latitude: position.coords.latitude,
-                      longitude: position.coords.longitude,
-                      latitudeDelta: 0.0462,
-                      longitudeDelta: 0.0261,
-                    });
-                    console.log('map regions:',region)
-                    setMarker({
-                      latitude: position.coords.latitude,
-                      longitude: position.coords.longitude,
-                    });
-                        Geocoder.from(position.coords.latitude,
-                           position.coords.longitude)
-                            .then(json => {
-                                console.log(json);
-        var addressComponent = json.results[0].address_components;
-                            })
+////////////////get live location//////////////
+const getLiveLocation = async () => {
+Geocoder.init(MapKeyApi); 
+const locPermissionDenied = await locationPermission()
+if (locPermissionDenied) {
+    const { latitude, longitude, heading } = await getCurrentLocation()
+    // console.log("get live location after 4 second",latitude,longitude,heading)
+    setGuest_lat(latitude)
+    setGuest_log(longitude)
+    Geocoder.from(latitude,
+      longitude)
+       .then(json => {
+var addressComponent = json.results[0].formatted_address;
+setGuest_location(addressComponent)
+       })
+}
+}
+    useEffect(() => {
+      const interval = setInterval(() => {
+          GetOrders()
+      }, 6000);
+      return () => clearInterval(interval);
+      getLiveLocation()
+      GetAcountDetail()
+    }, []);
+
+      ///////////////data states////////////////////
+  const [username, setUserName] = React.useState();
+  const [image, setUserImage] = React.useState();
+    const GetAcountDetail=async() => {
+      var user= await AsyncStorage.getItem('Userid')
+      console.log("order request function",user)
   
-                            .catch(error => console.warn(error));
-                    },
-                    (error) => {
-                        // See error code charts below.
-                    
-                                setError(error.message)
-                       
-                            console.log(error.code, error.message);
-                    },
-                    {
-                        enableHighAccuracy: false,
-                        timeout: 10000,
-                        maximumAge: 100000
-                    }
-                );
-  }
-
-
-    useEffect(() => {
-        GetcurrLocation()
-        GetOrders()
-      
-    }, []);
-    useEffect(() => {
-        // back handle exit app
-        BackHandler.addEventListener('hardwareBackPress', backButtonHandler);
-        return () => {
-            BackHandler.removeEventListener('hardwareBackPress', backButtonHandler);
-        };
-    }, []);
-let backHandlerClickCount = 0;
-    const backButtonHandler = () => {
-        const shortToast = message => {
-            Toast.show(message, {
-                duration: Toast.durations.LONG,
-                position: Toast.positions.BOTTOM,
-            });
-        }
-        let backHandlerClickCount;
-        backHandlerClickCount += 1;
-        if ((backHandlerClickCount < 2)) {
-            shortToast('Press again to quit the application');
-        } else {
-            BackHandler.exitApp();
-        }
-
-        // timeout for fade and exit
-        setTimeout(() => {
-            backHandlerClickCount = 0;
-        }, 1000);
-        
-        return true;
-    }
+      await axios({
+        method: 'GET',
+        url: BASE_URL+'api/guest/specificGuest/'+user,
+      })
+      .then(function (response) {
+        //console.log("response get here dispatcher", JSON.stringify(response.data))
+        setUserImage(response.data[0].img)
+        setUserName(response.data[0].name)
+      })
+      .catch(function (error) {
+        console.log("error", error)
+      })
+      }
     return (
 <SafeAreaView style={styles.container}>
     <ScrollView 
@@ -181,76 +160,58 @@ let backHandlerClickCount = 0;
      showsHorizontalScrollIndicator={false}>
             <StatusBar backgroundColor={'black'} barStyle="light-content" />
             <DashboardHeader
-                headerlabel={'Username'}
-                userimage={appImages.ProfileUser}
+                headerlabel={username}
+                image={image}
                 iconPress={() => { navigation.toggleDrawer()}}
                 icon={'menu'}
                 onpresseacrh={() => onSearch()}
             />
 
-<View style={{height:hp(30)}}>
-    {pinlat && pinlog >0?
-    <MapView
-    style={[styles.mapStyle]}
-   provider={PROVIDER_GOOGLE} // remove if not using Google Maps 
-    initialRegion={      {
-      latitude: pinlat,
-      longitude: pinlog,
-      latitudeDelta: 0.0922,
-      longitudeDelta: 0.0421,
-    }}
-  >
-              {marker != ''?
+<View style={{height: hp(30)}}>
+      {guest_lat && guest_log > 0 ? (
+        <MapView
+          style={[styles.mapStyle]}
+          provider={PROVIDER_GOOGLE} // remove if not using Google Maps
+          initialRegion={{
+            latitude: guest_lat,
+            longitude: guest_log,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+          }}>
+          {guest_lat && guest_log > 0  ? (
             <Marker
-            draggable={true}
-            coordinate={
-              {      
-              latitude: pinlat,
-              longitude: pinlog
-            }}
-              title={'title'}
-              description={'here'}
-              onDragStart={(e)=>
-                console.log('Darg Start:',e.nativeEvent.coordinate)}
-                onDragEnd={(e)=>
-                 { console.log('Darg Start:',e.nativeEvent.coordinate),
-                 setPinLat(e.nativeEvent.coordinate.latitude)
-                 setPinLog(e.nativeEvent.coordinate.longitude)
-                  console.log('Darg Start:',pinlat,pinlog)}
-                }
+              draggable={true}
+              coordinate={{
+                latitude: guest_lat,
+                longitude: guest_log,
+              }}
             />
-            :
-            null
-          }
-  </MapView>
-:null}
-
-</View>
+          ) : null}
+        </MapView>
+      ) : null}
+    </View>
 
 <View style={styles.locview}>
 <Icon name={'location'} size={25} 
           color= {Colors.Appthemeorangecolor}
            //onPress={props.iconPress} 
            />
-<Text style={styles.loctext}>User current Location Here</Text>
+<Text style={styles.loctext}>{guest_location}</Text>
 </View>
 <ViewAll
                 headerlabel={'Upcoming Trips'}
-                onpress={() =>navigation.navigate('GuestsList')}
+                onpress={() =>navigation.navigate('Orders')}
             />
-{Orderss === ''?null:
+{Orders === ''?null:
 
-Orderss.slice(0, 3).map((item, key) => (
+Orders.slice(0, 3).map((item, key) => (
 <OrdersCards
                                       
-                                    //   time={item.flight_time}
-                                    //    price={item.total_amount+'$'}
-                                    //    pickupLoc={item.pickup_location}
-                                    //    dropoffLoc={item.dropoff_location}
-                                    time={'00:00 pm'}
-                                    price={'200'+'$'}
-                                    pickupLoc={'Pickup location here'}
-                                    dropoffLoc={'Drop off location here'}
+                                      time={item.flight_time}
+                                       price={item.total_amount+'$'}
+                                       pickupLoc={item.pickup_location}
+                                       dropoffLoc={item.dropoff_location}
+                    
                                    />
 ))}
 

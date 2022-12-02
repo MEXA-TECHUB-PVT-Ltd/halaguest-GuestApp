@@ -35,6 +35,7 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import styles from './styles';
 import Colors from '../../../utills/Colors';
 import Inputstyles from '../../../styles/GlobalStyles/Inputstyles';
+import Multilineinputstyles from '../../../styles/GlobalStyles/Multilineinputstyle';
 
 /////////////////app images///////////
 import { appImages } from '../../../constant/images';
@@ -135,7 +136,6 @@ const CreateAccount = ({ navigation,route }) => {
 
     useEffect(() => {
       checkPermission().then(result => {
-        console.log("here in google password",result);
         setFCMToken(result)
         //do something with the result
       })

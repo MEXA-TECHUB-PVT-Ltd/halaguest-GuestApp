@@ -54,26 +54,30 @@ locview:
 { 
   borderBottomColor:Colors.border,
 borderBottomWidth:1,
-height:wp(10),
+backgroundColor:'white',
+paddingVertical:hp(0.6),
+paddingBottom:hp(0.2),
+//height:wp(15),
 width:wp(100),
 paddingHorizontal:wp(5),
 flexDirection:'row',
-// shadowColor: "#000",
-// shadowOffset: {
-//     width: 0,
-//     height: 3,
-// },
-// shadowOpacity: 0.27,
-// shadowRadius: 4.65,
+shadowColor: "#000",
+shadowOffset: {
+    width: 0,
+    height: 3,
+},
+shadowOpacity: 0.27,
+shadowRadius: 4.65,
 
-// elevation: 6,
+elevation: 6,
 },
 loctext:
 {
   color:Colors.BottomTabcolor,
   marginLeft:wp(3),
   fontFamily:fontFamily.Poppins_Medium,
-fontSize:hp(1.6)
+fontSize:hp(1.6),
+width:wp(80),
 },
 });
 export default styles;

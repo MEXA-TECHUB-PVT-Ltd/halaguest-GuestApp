@@ -50,9 +50,12 @@ inputtoptext:
   marginLeft:wp(8),
   marginBottom:wp(2),
   marginTop:wp(4),
+},
+inputicons:{
+  height:hp(2.9),
+  width:wp(6),
+  borderRadius:wp(10)
 }
-
-
 
 });
 export default Inputstyles;

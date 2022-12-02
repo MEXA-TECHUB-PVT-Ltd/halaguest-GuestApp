@@ -79,10 +79,6 @@ const Login = ({ navigation }) => {
     }
   };
 
-  useEffect(() => {
-
-  }, []);
-
   return (
 
     <SafeAreaView style={styles.container}> 

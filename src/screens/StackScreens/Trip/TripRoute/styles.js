@@ -116,6 +116,27 @@ borderRadius:80,
 
 },
 
+
+/////////////////route/////////////////
+container1:
+{
+flex:1,
+backgroundColor:'white',
+},
+// container: {
+// marginTop:'25%',
+// ...StyleSheet.absoluteFillObject,
+// height: hp('85%'),
+// width: wp(100),
+// justifyContent: 'flex-end',
+// alignItems: 'center',
+// backgroundColor: 'white',
+// },
+map: {
+...StyleSheet.absoluteFillObject,
+//position:'absolute',
+//backgroundColor:'white'
+},
   });
   export default styles;
   

@@ -129,7 +129,19 @@ subtext:
 fontSize:hp(1.5),
 },
 
+btntext:
+{
+  color: 'white',
+  fontSize: hp(1.8),
+  fontFamily:fontFamily.Poppins_Regular,
 
-
+},
+mapStyle: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
   });
   export default styles;

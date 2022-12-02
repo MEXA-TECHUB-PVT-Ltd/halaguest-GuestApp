@@ -20,7 +20,7 @@ import { BASE_URL } from '../../utills/ApiRootUrl';
   import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const HotelTypes = (props) => {
-    console.log('here:',props)
+
     /////////////redux states///////
     const { HotelTypes} = useSelector(state => state.userReducer);
     const dispatch = useDispatch();
@@ -34,13 +34,13 @@ const HotelTypes = (props) => {
 
   ///////////////HotelTypes function///////////////
     const GetHotelTypes =async () => {
-        console.log('here:',BASE_URL+'api/hotelType/allhotelTypes')
+      
         axios({
           method: 'GET',
           url: BASE_URL+'api/hotel/allHotels',
         })
           .then(function (response) {
-            console.log("response", JSON.stringify(response.data))
+            // console.log("response", JSON.stringify(response.data))
             setdddata(response.data)
             console.log('flatlist data:', dddata)
           })

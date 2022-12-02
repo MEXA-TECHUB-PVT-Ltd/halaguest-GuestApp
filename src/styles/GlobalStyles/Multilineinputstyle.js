@@ -4,10 +4,12 @@ import {
   Dimensions
 } from 'react-native';
 import Colors from '../../utills/Colors';
-const Width = Dimensions.get("screen").width;
-const Height = Dimensions.get("screen").height;
+
 import { widthPercentageToDP as wp, heightPercentageToDP as hp }
   from 'react-native-responsive-screen';
+
+  /////////////app fonts//////////
+  import { fontFamily } from '../../constant/fonts';
 
 const Multilineinputstyles = StyleSheet.create({
 
@@ -28,7 +30,7 @@ const Multilineinputstyles = StyleSheet.create({
         width:wp('72%'), 
         textAlignVertical: 'top',
         color: 'black' ,
-        fontWeight:'500',
+        fontFamily:fontFamily.Lato_Regular
     //backgroundColor:'red'
     },
     action: {
