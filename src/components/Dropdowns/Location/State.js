@@ -45,7 +45,6 @@ const StateDropDown = (props) => {
         })
           .then(function (response) {
             setdddata(response.data)
-            console.log('flatlist data:', dddata)
           })
           .catch(function (error) {
             console.log("error", error)

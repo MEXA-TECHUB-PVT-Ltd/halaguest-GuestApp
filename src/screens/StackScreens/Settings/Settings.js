@@ -43,10 +43,10 @@ const Settings = ({ navigation }) => {
         />
 
 <View style={{marginTop:hp(6)}}></View>
-<SettingsMenu
+{/* <SettingsMenu
        label={'Update Profile'}
        labelPress={()=>navigation.navigate('UpdateProfile')}
-       />
+       /> */}
        <SettingsMenu
        label={'Privacy Policy'}
        labelPress={()=>navigation.navigate('PrivacyTerms',{navplace:'Privacy'})}
@@ -55,10 +55,10 @@ const Settings = ({ navigation }) => {
        label={'Terms & Condition'}
        labelPress={()=>navigation.navigate('PrivacyTerms',{navplace:'Terms'})}
        />
-       <SettingsMenu
+       {/* <SettingsMenu
        label={'Contact Us'}
-       //labelPress={()=>navigation.navigate('Contact Us')}
-       />
+       labelPress={()=>navigation.navigate('Contact Us')}
+       /> */}
        <SettingsMenu
        label={'How to Use'}
        //labelPress={()=>navigation.navigate('How to Use')}
@@ -66,7 +66,7 @@ const Settings = ({ navigation }) => {
 <CustomButtonhere
             title={'LOGOUT'}
             widthset={78}
-            topDistance={20}
+            topDistance={40}
             icon={'power'}
             onPress={() => 
              {

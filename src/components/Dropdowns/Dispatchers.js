@@ -24,7 +24,7 @@ import { BASE_URL } from '../../utills/ApiRootUrl';
   import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Dispatchers = (props) => {
-    console.log('here:',props)
+
     /////////////redux states///////
     const { links} = useSelector(state => state.userReducer);
     const dispatch = useDispatch();
@@ -38,15 +38,14 @@ const Dispatchers = (props) => {
 
   ///////////////link function///////////////
     const GetDispatchers =async () => {
-        console.log('here:')
         axios({
           method: 'GET',
           url: BASE_URL+'api/dispacher/allDispachers',
         })
           .then(function (response) {
-            console.log("response", JSON.stringify(response.data))
+            // console.log("response", JSON.stringify(response.data))
             setdddata(response.data)
-            console.log('flatlist data:', dddata)
+  
           })
           .catch(function (error) {
             console.log("error", error)

@@ -110,29 +110,26 @@ function BottomTab() {
             </View>
           ),
         }} />
-                <Tab.Screen name="Transaction" component={Transaction}
+                {/* <Tab.Screen name="Transaction" component={Transaction}
         options={{
           headerShown: false,
 
           tabBarIcon: ({ color, focused }) => (
             <View style={style.maintabview}>
             <View style={[style.tab, focused ? style.selectedTab : null]}>
-            {/* <Ionicons name="person" color={!focused ? 'grey' :'white'} size={25} /> */}
+ 
             <IconButton
                 icon={appImages.Transaction}
                 iconColor={ !focused ? 'grey':'white'}
                 style={{backgroundColor: focused ? null:'white',color:"red"}}
                 size={30}
               />
-               {/* <Image
-                        source={appImages.Camera}
-                        style={{ width: wp(6), height: hp(3.5)}}
-                      /> */}
+        
             </View>
             <Text style={style.tabtextcolor}>{!focused ?null:'Transaction'}</Text>
             </View>
           ),
-        }} />
+        }} /> */}
            <Tab.Screen name="Profile" component={Profile}
         options={{
           headerShown: false,
@@ -141,10 +138,7 @@ function BottomTab() {
             <View style={style.maintabview}>
             <View style={[style.tab, focused ? style.selectedTab : null]}>
             <Ionicons name="person" color={!focused ? 'grey' :'white'} size={25} />
-               {/* <Image
-                        source={appImages.Camera}
-                        style={{ width: wp(6), height: hp(3.5)}}
-                      /> */}
+    
             </View>
             <Text style={style.tabtextcolor}>{!focused ?null:'Profile'}</Text>
             </View>

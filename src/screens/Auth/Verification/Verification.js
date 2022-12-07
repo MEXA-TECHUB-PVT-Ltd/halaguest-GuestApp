@@ -38,13 +38,11 @@ import axios from 'axios';
 import { BASE_URL } from '../../../utills/ApiRootUrl';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-
 /////////////////////////////////firebase///////////////////////
 import auth from '@react-native-firebase/auth';
 import { checkPermission } from '../../../api/FCMToken';
 
 const Verification = ({ navigation,route }) => {
-  console.log("obj:",route.params)
 
     /////////////previous data state///////////////
     const [predata] = useState(route.params);
@@ -68,12 +66,10 @@ const Verification = ({ navigation,route }) => {
   
     return `${minutes}:${seconds}`
   }
-
-
    //code Confirmation states
  const [value, setValue] = useState();
 //cell number
-  const CELL_COUNT = 6;
+  const CELL_COUNT = 4;
 
     const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
     const [props, getCellOnLayoutHandler] = useClearByFocusCell({
@@ -81,33 +77,10 @@ const Verification = ({ navigation,route }) => {
       setValue,
     });
 
- //button states
- const [loading, setloading] = useState(0);
- const [disable, setdisable] = useState(0);
-
- //check OTP Code
- const verifyno =()=>{
-  console.log("obj:",route.params.otp  ,value )
-  if(route.params.otp == value)
-  {
-    navigation.navigate('NewPassword',value)
-  }
-  else{
-    alert('Wrong Code, Enter the right Code')
-    console.log("not click")
-  }
-}
-
-//code set in state
-  const getcode=()=>{
-    console.log("obj:",route.params)
-    //setValue(route.params)
-  }
 
 const[FCMToken,setFCMToken]=useState()
   //////////////////////Api Calling Login/////////////////
   const CheckLogin = async () => {
-    console.log('userid:',BASE_URL + 'api/phoneNo/logins', predata.Phonenumber,FCMToken);
 axios({
   method: 'POST',
   url: BASE_URL + 'api/phoneNo/logins',
@@ -118,8 +91,8 @@ axios({
   },
 })
   .then(async function (response) {
-    console.log('response in driver login', JSON.stringify(response.data.data.hotel_id.length));
-    if(response.data.message === "Guest Exists" && response.data.data.hotel_id.length>0)// && response.data.data.hotel_id.length===0
+    console.log('response in driver login', JSON.stringify(response.data.data));
+    if(response.data.message === "Guest Exists" && response.data.data.hotel_id.length>0)// && response.data.data.hotel_id.length>0
     {
       dispatch(setPhoneNumber(response.data.data.phoneno))
       dispatch(setLoginUser(response.data.data._id))
@@ -139,61 +112,27 @@ axios({
     console.log('error', error);
   });
 };
-const [confirm, setConfirm] = React.useState(null);
 
-const [code, setCode] = React.useState('');
-const [confirmcode, setconfirmCode] = React.useState('');
+  //button states
+  const [loading, setloading] = useState(0);
+  const [disable, setdisable] = useState(0);
 
-  // Set an initializing state whilst Firebase connects
-  const [initializing, setInitializing] = React.useState(true);
-  const [user, setUser] = React.useState();
-
-  // Handle user state changes
-  const onAuthStateChanged=(user) =>{
-    console.log('user detail Here',user)
-    // setUser(user);
-    // if (initializing) setInitializing(false);
-  }
-
-  React.useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber; // unsubscribe on unmount
-  }, []);
-
-// Handle the button press
-const signInWithPhoneNumber=async(phoneNumber) =>{
-  const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
-  setConfirm(confirmation);
-  console.log('code.',confirmation.verificationId);
-}
-
-const confirmCode=async()=> {
-  console.log('user code.',value);
-  try {
-    var data= auth.PhoneAuthProvider.credential(confirm.verificationId, value);
-    //var data=await confirm.confirm(code);
-    console.log('user data after verification.',data);
-    setconfirmCode(data.secret)
-    if(data.secret === value)
-    {
-      CheckLogin()
-      //alert('suceffully matched otp')
-    }
-    else 
-    {
+  //check OTP Code
+  const verifyno = () => {
+    setloading(1);
+    console.log('obj:', route.params.code, value);
+    if (route.params.code == value) {
+      CheckLogin();
+      setloading(0);
+    } else {
       setModalVisible1(true)
-      //alert('error in matched otp')
+      console.log('not click');
+      setloading(0);
     }
-  } catch (error) {
-    console.log('Invalid code.');
-  }
-}
+  };
   useEffect(() => {
-    //signInWithPhoneNumber('+'+predata.Phonenumber)
              checkPermission().then(result => {
-            console.log("here in google password",result);
             setFCMToken(result)
-            //do something with the result
           })
   },[]);
   return (
@@ -290,12 +229,9 @@ disabled={disabletimer}
             title={'Verify'}
             widthset={'70%'}
             topDistance={0}
-            //onPress={() => verifyno()}
-            onPress={()=> 
-              //confirmCode()
-                CheckLogin() 
-               // navigation.navigate('CreateAccount',{navplace:'CreateAccount'})
-                }
+            loading={loading}
+            disabled={disable}
+            onPress={() => verifyno()}
           /></View>
    <CustomModal 
                 modalVisible={modalVisible}

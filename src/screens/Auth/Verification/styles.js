@@ -29,7 +29,7 @@ marginTop:hp(25)
       Cellview:{
         marginBottom:10,
         marginTop:10,
-        paddingHorizontal:wp(5)
+        paddingHorizontal:wp(15)
       },
       root: {
         //flex: 1, 

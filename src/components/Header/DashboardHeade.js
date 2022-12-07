@@ -16,6 +16,7 @@ import { fontFamily } from '../../constant/fonts';
 
 ////////////////app redux///////////
 import { useSelector } from 'react-redux';
+import { BASE_URL } from '../../utills/ApiRootUrl';
 
 const DashboardHeader = ({ navigation, headerlabel,image}) => {
     ////////////////////redux/////////////////////
@@ -28,7 +29,7 @@ const DashboardHeader = ({ navigation, headerlabel,image}) => {
           <Text style={style.labelsubtext}>{headerlabel}</Text>
           </View>
           <Image
-            source={appImages.ProfileUser}
+            source={{uri:BASE_URL+image}}
             style={style.logo}
             resizeMode='contain'
           />
@@ -68,7 +69,8 @@ elevation: 19,
     logo:
     {
         height:wp(16),
-        width:wp(16)
+        width:wp(16),
+        borderRadius:wp(10)
       },
       labelmaintext:
 { 

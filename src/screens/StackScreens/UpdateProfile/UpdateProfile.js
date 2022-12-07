@@ -97,7 +97,7 @@ const UpdateProfile = ({ navigation,route }) => {
  const UpdateAcount = async() => {
   var user= await AsyncStorage.getItem('Userid')
   var date=new Date()
-  console.log("userid:",date,user,hoteltype_id)
+  console.log("userid:",date,user,hoteltype_id,name)
     axios({
       method: 'PUT',
       url: BASE_URL + 'api/guest/updateGuest',
