@@ -124,14 +124,14 @@ const [loading, setloading] = useState(true);
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}>
         <CustomHeader
-          headerlabel={'Order Details'}
+          headerlabel={'Trip Details'}
           iconPress={() => {
             navigation.goBack();
           }}
           icon={'chevron-back'}
         />
         <View style={styles.ordertopview}>
-          <Text style={styles.ordertoptext}>Order # {OrderNo}</Text>
+          <Text style={styles.ordertoptext}>Trip # {OrderNo}</Text>
         </View>
 
         <View style={{marginHorizontal: wp(5)}}>

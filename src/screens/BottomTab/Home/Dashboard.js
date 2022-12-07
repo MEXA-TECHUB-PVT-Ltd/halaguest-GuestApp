@@ -1,27 +1,23 @@
 import React, { useEffect, useState, useRef } from 'react';
 import {
-    SafeAreaView, FlatList, StatusBar, ImageBackground,BackHandler,
+    SafeAreaView, FlatList, StatusBar,
     ScrollView,
     Image, View, Text, TouchableOpacity, TextInput,ActivityIndicator
 } from 'react-native';
 
 // Import Map and Marker
 import Geocoder from 'react-native-geocoding';
-import Geolocation from '@react-native-community/geolocation';
 import MapView, {Marker,PROVIDER_GOOGLE,AnimatedRegion } from 'react-native-maps';
 import { MapKeyApi } from '../../../utills/MapKey';
 
 
 //////////////////app icons////////////////
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 //////////////////////app components///////////////
 import DashboardHeader from '../../../components/Header/DashboardHeade';
 import ViewAll from '../../../components/ViewAll/ViewAll';
-import GuestCards from '../../../components/CustomCards/GuestCards/GuestCards';
 import OrdersCards from '../../../components/CustomCards/OrderCards/Orders';
-import CustomCards from '../../../components/CustomCards/CustomCards';
 
 ////////////////////redux////////////
 import { useSelector, useDispatch } from 'react-redux';
@@ -49,43 +45,10 @@ import {
 } from '../../../api/CurrentLocation';
 
 
-const Orderss = [
-    {
-      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-      title: 'First Item',
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-      title: 'Second Item',
-    },
-    {
-      id: '58694a0f-3da1-471f-bd96-145571e29d72',
-      title: 'Third Item',
-    },
-    {
-        id: '58694a0f-3da1-471f-bd9556-145571e29d72',
-        title: 'Third Item',
-      },
-  ];
-
 const Home = ({ navigation }) => {
-
-    //Modal States
-    const [modalVisible, setModalVisible] = useState(false);
 
     const { name, age } = useSelector(state => state.userReducer);
     const dispatch = useDispatch();
-
-
-    const _map = React.useRef(null);
-  /////////////map states////////////
-  const [mapmargin, setMapMargin]=useState(1)
-    const [eror, setError]=useState()
-const [region, setRegion] = useState();
-const [marker, setMarker] = useState();
-const [pinlat, setPinLat] = useState(56.002716);
-const [pinlog, setPinLog] = useState(-4.580081);
-const [userloc, setuserloc] = useState(false);
 
             /////////////main menu status states/////////////
     const [Orders, setOrders] = useState('')
@@ -125,12 +88,12 @@ setGuest_location(addressComponent)
 }
 }
     useEffect(() => {
-      const interval = setInterval(() => {
-          GetOrders()
-      }, 6000);
-      return () => clearInterval(interval);
       getLiveLocation()
       GetAcountDetail()
+      const interval = setInterval(() => {
+        GetOrders()
+    }, 6000);
+    return () => clearInterval(interval);
     }, []);
 
       ///////////////data states////////////////////

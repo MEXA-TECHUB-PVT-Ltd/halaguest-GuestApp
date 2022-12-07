@@ -33,43 +33,43 @@ function App() {
   const [loading, setLoading] = React.useState(true);
   const [initialRoute, setInitialRoute] = React.useState('Home');
 
-  React.useEffect(() => {
-    // Assume a message-notification contains a "type" property in the data payload of the screen to open
-    //   messaging().onMessage(remoteMessage => {
-    //     navigation.navigate('GooglePassword');
-    //     console.log(props.navigation)
-    // });
-    messaging().onNotificationOpenedApp(remoteMessage => {
-      console.log(
-        'Notification caused app to open from background state:',
-        remoteMessage.notification.body,
-      );
-      AsyncStorage.setItem('Notification', remoteMessage.notification.body);
+  // React.useEffect(() => {
+  //   // Assume a message-notification contains a "type" property in the data payload of the screen to open
+  //   //   messaging().onMessage(remoteMessage => {
+  //   //     navigation.navigate('GooglePassword');
+  //   //     console.log(props.navigation)
+  //   // });
+  //   messaging().onNotificationOpenedApp(remoteMessage => {
+  //     console.log(
+  //       'Notification caused app to open from background state:',
+  //       remoteMessage.notification.body,
+  //     );
+  //     AsyncStorage.setItem('Notification', remoteMessage.notification.body);
 
-      //navigation.navigate('UpdateProfile');
-    });
+  //     //navigation.navigate('UpdateProfile');
+  //   });
 
-    // Check whether an initial notification is available
-    messaging()
-      .getInitialNotification()
-      .then(remoteMessage => {
-        if (remoteMessage) {
-          console.log(
-            'Notification caused app to open from quit state:',
-            remoteMessage.notification.body,
-          );
-          AsyncStorage.removeItem('Notification');
-          AsyncStorage.setItem('Notification', remoteMessage.notification.body);
-          //navigation.navigate('UpdateProfile');s
-          //setInitialRoute(remoteMessage.data.type); // e.g. "Settings"
-          //setInitialRoute(remoteMessage.data.type);
-        }
-        setLoading(false);
-      });
-    if (loading) {
-      return null;
-    }
-  }, []);
+  //   // Check whether an initial notification is available
+  //   messaging()
+  //     .getInitialNotification()
+  //     .then(remoteMessage => {
+  //       if (remoteMessage) {
+  //         console.log(
+  //           'Notification caused app to open from quit state:',
+  //           remoteMessage.notification.body,
+  //         );
+  //         AsyncStorage.removeItem('Notification');
+  //         AsyncStorage.setItem('Notification', remoteMessage.notification.body);
+  //         //navigation.navigate('UpdateProfile');s
+  //         //setInitialRoute(remoteMessage.data.type); // e.g. "Settings"
+  //         //setInitialRoute(remoteMessage.data.type);
+  //       }
+  //       setLoading(false);
+  //     });
+  //   if (loading) {
+  //     return null;
+  //   }
+  // }, []);
   return (
     <Provider store={Store}>
       <NavigationContainer>

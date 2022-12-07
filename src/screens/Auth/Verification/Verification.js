@@ -69,7 +69,7 @@ const Verification = ({ navigation,route }) => {
    //code Confirmation states
  const [value, setValue] = useState();
 //cell number
-  const CELL_COUNT = 6;
+  const CELL_COUNT = 4;
 
     const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
     const [props, getCellOnLayoutHandler] = useClearByFocusCell({
@@ -77,28 +77,6 @@ const Verification = ({ navigation,route }) => {
       setValue,
     });
 
- //button states
- const [loading, setloading] = useState(0);
- const [disable, setdisable] = useState(0);
-
- //check OTP Code
- const verifyno =()=>{
-  console.log("obj:",route.params.otp  ,value )
-  if(route.params.otp == value)
-  {
-    navigation.navigate('NewPassword',value)
-  }
-  else{
-    alert('Wrong Code, Enter the right Code')
-    console.log("not click")
-  }
-}
-
-//code set in state
-  const getcode=()=>{
-    console.log("obj:",route.params)
-    //setValue(route.params)
-  }
 
 const[FCMToken,setFCMToken]=useState()
   //////////////////////Api Calling Login/////////////////
@@ -134,61 +112,27 @@ axios({
     console.log('error', error);
   });
 };
-  //////////////////////Api Calling Login/////////////////
-  const SendSms = async () => {
-    axios({
-      method: 'POST',
-      url: BASE_URL + 'api/sms/createOTP',
-      data: {
-        phoneno: predata.Phonenumber,
-      },
-    })
-      .then(async function (response) {
-        console.log('response in driver login', JSON.stringify(response.data.data));
-     
-      })
-      .catch(function (error) {
-        console.log('error', error);
-      });
-    };
-const [confirm, setConfirm] = React.useState(null);
 
-const [code, setCode] = React.useState('');
-const [confirmcode, setconfirmCode] = React.useState('');
+  //button states
+  const [loading, setloading] = useState(0);
+  const [disable, setdisable] = useState(0);
 
-  // Set an initializing state whilst Firebase connects
-  const [initializing, setInitializing] = React.useState(true);
-  const [user, setUser] = React.useState();
-
-
-  React.useEffect(() => {
-  }, []);
-
-const confirmCode=async()=> {
-  console.log('user code.',value);
-  try {
-    var data= auth.PhoneAuthProvider.credential(confirm.verificationId, value);
-    //var data=await confirm.confirm(code);
-    console.log('user data after verification.',data);
-    setconfirmCode(data.secret)
-    if(data.secret === value)
-    {
-      CheckLogin()
-      //alert('suceffully matched otp')
-    }
-    else 
-    {
+  //check OTP Code
+  const verifyno = () => {
+    setloading(1);
+    console.log('obj:', route.params.code, value);
+    if (route.params.code == value) {
+      CheckLogin();
+      setloading(0);
+    } else {
       setModalVisible1(true)
-      //alert('error in matched otp')
+      console.log('not click');
+      setloading(0);
     }
-  } catch (error) {
-    console.log('Invalid code.');
-  }
-}
+  };
   useEffect(() => {
              checkPermission().then(result => {
             setFCMToken(result)
-            //do something with the result
           })
   },[]);
   return (
@@ -285,13 +229,9 @@ disabled={disabletimer}
             title={'Verify'}
             widthset={'70%'}
             topDistance={0}
-            //onPress={() => verifyno()}
-            onPress={()=> 
-              //confirmCode()
-              //SendSms()
-                CheckLogin() 
-               // navigation.navigate('CreateAccount',{navplace:'CreateAccount'})
-                }
+            loading={loading}
+            disabled={disable}
+            onPress={() => verifyno()}
           /></View>
    <CustomModal 
                 modalVisible={modalVisible}

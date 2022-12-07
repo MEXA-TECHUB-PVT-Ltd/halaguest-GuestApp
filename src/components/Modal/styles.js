@@ -39,7 +39,8 @@ const styles = StyleSheet.create({
           fontSize:hp(2),
           color:'#303030',
           fontFamily: fontFamily.Poppins_Regular,
-          textAlign:'center'
+          textAlign:'center',
+          width:wp(70)
       },
       modalsubtext:
       { 
