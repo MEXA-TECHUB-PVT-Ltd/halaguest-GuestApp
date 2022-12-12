@@ -5,6 +5,7 @@ import { View, Text } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 //Screens
+import LoaderScreen from '../../screens/Auth/LoaderScreen/LoaderScreen';
 import SplashScreen from '../../screens/Auth/Splash/Splash';
 import Login from '../../screens/Auth/Login/Login';
 import Verification from '../../screens/Auth/Verification/Verification';
@@ -15,6 +16,10 @@ const Stack = createNativeStackNavigator();
 function AuthNav() {
   return (
     <Stack.Navigator>
+               <Stack.Screen name="LoaderScreen" component={LoaderScreen}
+        options={{
+          headerShown: false,
+        }} />
      <Stack.Screen name="SplashScreen" component={SplashScreen}
         options={{
           headerShown: false,
