@@ -1,6 +1,6 @@
 
-//export const BASE_URL = 'http://104.248.123.129:3000/api/';
-export const BASE_URL = 'http://192.168.18.20:4000/'
+export const BASE_URL = 'http://146.190.216.209:4000/';
+//export const BASE_URL = 'http://192.168.18.20:4000/'
 //export const BASE_URL = 'http://192.168.0.112:4000/'
 
 export const Driver_DeviceToken='key=AAAA5_RZMko:APA91bE6RL14Vb9iOgVZQMaZ40oYaNbPyy_nVNhUfGkWyb_6rxj7sh7k7S3RAEhc0YtXsYMQ20xIP6KtCWIfc4PTHSiHhwiD66YOMUAiTWGEHl_orPwKdO6hNVhmU4niSCiswkHvwHq0'

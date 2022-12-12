@@ -87,8 +87,10 @@ const TripRoute = ({navigation, route}) => {
   const ref = useRef();
   const [state, setState] = useState({
     curLoc: {
-      latitude: previousdata.pickupLat,
-      longitude: previousdata.pickupLng,
+      latitude:    previousdata.driverLat,
+      longitude:  previousdata.driverLng,
+      // latitude: previousdata.pickupLat,
+      // longitude: previousdata.pickupLng,
     },
     destinationCords: {
       latitude: previousdata.dropoffLat,
@@ -146,6 +148,7 @@ const TripRoute = ({navigation, route}) => {
   };
 
   const fetchTime = (d, t) => {
+       setroutetime(t)
     updateState({
       distance: d,
       time: t,
@@ -174,7 +177,7 @@ const TripRoute = ({navigation, route}) => {
   useEffect(() => {
     if (isfocussed) {
     GetOrderDetail();
-    CheckStatus()
+    CallApi()
     }
     ref.current?.setAddressText('Rawalpindi');
     const interval = setInterval(() => {
@@ -193,6 +196,47 @@ const CheckStatus=()=>{
   {
 console.log('same ongong status',OrderStatus)
   }
+}
+const CheckRideStatus = async () => {
+  console.log('here ids',orderid)
+      axios({
+        method: 'POST',
+        url: BASE_URL + 'api/Order/checkRideStatus',
+        data: {
+          _id: orderid,
+        },
+      })
+        .then(function (response) {
+        console.log(' Cancel response', JSON.stringify(response.data));
+       navigation.navigate("TripCompleted",{  
+        orderid: orderid,
+        pickupLat: PickupLat,
+        pickupLng: PickupLng,
+        dropoffLat: DropoffLat,
+        dropoffLng: DropoffLng})
+          
+        })
+        .catch(function (error) {
+          console.log('error', error);
+        });
+    };
+////////////////Check api STATUS//////////
+const[routetime,setroutetime]=useState()
+const CallApi=async()=>{
+console.log("here",routetime*60)
+var duration=routetime*60
+var count=0
+if(count ==0){
+setTimeout(() => {
+  count+1
+  CheckRideStatus()
+        }, duration);
+        }
+        else{
+          setTimeout(() => {
+            CheckRideStatus()
+                  }, 120);
+        }
 }
 
   //order detail data states and apin function
